@@ -58,6 +58,6 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    countTimer('2 september  2021');
+    countTimer('5 september  2021');
 
 });
