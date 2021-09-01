@@ -1,5 +1,4 @@
 window.addEventListener('DOMContentLoaded', () => {
-
     //Таймер
     const countTimer = deadline => {
 
@@ -41,7 +40,6 @@ window.addEventListener('DOMContentLoaded', () => {
                     timerSeconds.textContent = timer.seconds;
                 }
 
-
             } else {
                 callback(id);
                 timerHours.textContent = '00';
@@ -57,7 +55,5 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-
     countTimer('5 september  2021');
-
 });
