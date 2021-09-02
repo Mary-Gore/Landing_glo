@@ -21,20 +21,20 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if (timer.timeRemaining > 0) {
 
-                if (String(timer.hours).length === 1) {
+                if (String(timer.hours).length < 2) {
                     timerHours.textContent = '0' + timer.hours;
                 } else {
                     timerHours.textContent = timer.hours;
                 }
 
-                if (String(timer.minutes).length === 1) {
+                if (String(timer.minutes).length < 2) {
 
                     timerMinuts.textContent = '0' + timer.minutes;
                 } else {
                     timerMinuts.textContent = timer.minutes;
                 }
 
-                if (String(timer.seconds).length === 1) {
+                if (String(timer.seconds).length < 2) {
                     timerSeconds.textContent = '0' + timer.seconds;
                 } else {
                     timerSeconds.textContent = timer.seconds;
