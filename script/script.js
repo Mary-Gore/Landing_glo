@@ -1,4 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
+
+    let intervalId;
+
     //Таймер
     const countTimer = deadline => {
 
@@ -16,7 +19,7 @@ window.addEventListener('DOMContentLoaded', () => {
             return { timeRemaining, hours, minutes, seconds };
         };
 
-        const updateClock = (id, callback) => {
+        const updateClock = () => {
             const timer = getTimeRemaining();
 
             if (timer.timeRemaining > 0) {
@@ -41,19 +44,15 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
 
             } else {
-                callback(id);
+                clearInterval(intervalId);
                 timerHours.textContent = '00';
                 timerMinuts.textContent = '00';
                 timerSeconds.textContent = '00';
             }
         };
 
-        const IntervalId = setInterval(updateClock, 1000);
-
-        updateClock(IntervalId, id => {
-            clearInterval(id);
-        });
+        intervalId = setInterval(updateClock, 1000);
     };
 
-    countTimer('5 september  2021');
+    countTimer('5 september 2021');
 });
