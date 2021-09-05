@@ -1,5 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
 
+
     let intervalId,
         intervalAnimateTop,
         intervalAnimateBottom,
@@ -87,12 +88,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if (!menu.classList.contains('active-menu')) {
                 menu.classList.add('active-menu');
-            } else {
-                if (elem.matches('a')) {
-                    menu.classList.remove('active-menu');
-                } else {
-                    return;
-                }
+            } else if (elem.matches('a')) {
+                menu.classList.remove('active-menu');
             }
         };
 
@@ -100,7 +97,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
             const target = event.target;
 
-            if (target) {
+            // Отслеживание клика по иконке бургера или эл-там меню
+            // чтобы запустить ф-цию еще раз для проверки класса
+            if (target.closest('.menu') || target.closest('menu')) {
                 handlerMenu(target);
             }
         });
