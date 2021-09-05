@@ -98,11 +98,37 @@ window.addEventListener('DOMContentLoaded', () => {
 
     toggleMenu();
 
+    const popupAnimateClose = () => {
+
+        // Отключение анимации на маленьких экранах
+        if (document.body.clientWidth >= 768) {
+
+            const start = Date.now();
+
+            // Анимация снизу вверх и скрытие блока
+            intervalAnimateBottom = setInterval(() => {
+
+                const passedBottom = Date.now() - start;
+
+                if (passedBottom >= time + 500) {
+                    clearInterval(intervalAnimateBottom);
+                    popup.style.display = 'none';
+                    return;
+                }
+
+                popupContent.style.top = (startPosition - passedBottom * 2) + 'px';
+
+            }, 1);
+
+        } else {
+            popup.style.display = 'none';
+        }
+    };
+
     // popup
     const togglePopUp = () => {
 
-        const popupBtn = document.querySelectorAll('.popup-btn'),
-            popupClose = document.querySelector('.popup-close');
+        const popupBtn = document.querySelectorAll('.popup-btn');
 
         popupBtn.forEach(elem => {
 
@@ -128,7 +154,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         popupContent.style.left = (popup.clientWidth / 2) - (popupContent.clientWidth / 2) + 60 + 'px';
                         popupContent.style.top = passed + 'px';
 
-                    }, 5);
+                    }, 2);
 
                 } else {
                     popup.style.display = 'block';
@@ -136,34 +162,59 @@ window.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        popupClose.addEventListener('click', () => {
+        popup.addEventListener('click', event => {
 
-            // Отключение анимации на маленьких экранах
-            if (document.body.clientWidth >= 768) {
+            let target = event.target;
 
-                const start = Date.now();
-
-                // Анимация снизу вверх и скрытие блока
-                intervalAnimateBottom = setInterval(() => {
-
-                    const passedBottom = Date.now() - start;
-
-                    if (passedBottom >= time + 500) {
-                        clearInterval(intervalAnimateBottom);
-                        popup.style.display = 'none';
-                        return;
-                    }
-
-                    popupContent.style.top = (startPosition - passedBottom * 2) + 'px';
-
-                }, 1);
-
+            if (target.classList.contains('popup-close')) {
+                popupAnimateClose();
             } else {
-                popup.style.display = 'none';
+                target = target.closest('.popup-content');
+
+                if (!target) {
+                    popupAnimateClose();
+                }
             }
         });
     };
 
     togglePopUp();
+
+    // Табы
+    const tabs = () => {
+        const tabHeader = document.querySelector('.service-header'),
+            tab = tabHeader.querySelectorAll('.service-header-tab'),
+            tabContent = document.querySelectorAll('.service-tab');
+
+        const toggleContent = index => {
+
+            for (let i = 0; i < tabContent.length; i++) {
+
+                if (index === i) {
+                    tab[i].classList.add('active');
+                    tabContent[i].classList.remove('d-none');
+                } else {
+                    tab[i].classList.remove('active');
+                    tabContent[i].classList.add('d-none');
+                }
+            }
+        };
+
+        tabHeader.addEventListener('click', event => {
+
+            let target = event.target;
+            target = target.closest('.service-header-tab');
+
+            if (target) {
+                tab.forEach((item, i) => {
+                    if (item === target) {
+                        toggleContent(i);
+                    }
+                });
+            }
+        });
+    };
+
+    tabs();
 
 });
