@@ -154,7 +154,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
 
-                    popupContent.style.top = (startPosition - passedBottom) + 'px';
+                    popupContent.style.top = (startPosition - passedBottom * 2) + 'px';
 
                 }, 1);
 
