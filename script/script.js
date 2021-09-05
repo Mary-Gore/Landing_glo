@@ -1,8 +1,8 @@
 window.addEventListener('DOMContentLoaded', () => {
 
     let intervalId,
-        intervalAnimateLeft,
-        intervalAnimateRight,
+        intervalAnimateTop,
+        intervalAnimateBottom,
         startPosition = 0,
         time;
 
@@ -16,7 +16,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         time = 1000;
     } else {
-        time = 2200;
+        time = 300;
     }
 
     const popup = document.querySelector('.popup'),
@@ -114,20 +114,21 @@ window.addEventListener('DOMContentLoaded', () => {
                     const start = Date.now();
 
                     // Анимация вправо
-                    intervalAnimateLeft = setInterval(() => {
+                    intervalAnimateTop = setInterval(() => {
 
                         const passed = Date.now() - start;
 
                         if (passed >= time) {
-                            clearInterval(intervalAnimateLeft);
-                            startPosition = passed / 5;
+                            clearInterval(intervalAnimateTop);
+                            startPosition = passed;
                             return;
                         }
 
                         popup.style.display = 'block';
-                        popupContent.style.left = passed / 5 + 'px';
+                        popupContent.style.left = (popup.clientWidth / 2) - (popupContent.clientWidth / 2) + 60 + 'px';
+                        popupContent.style.top = passed + 'px';
 
-                    }, 10);
+                    }, 5);
 
                 } else {
                     popup.style.display = 'block';
@@ -143,24 +144,23 @@ window.addEventListener('DOMContentLoaded', () => {
                 const start = Date.now();
 
                 // Анимация влево и скрытие блока
-                intervalAnimateRight = setInterval(() => {
+                intervalAnimateBottom = setInterval(() => {
 
-                    const passedRight = Date.now() - start;
+                    const passedBottom = Date.now() - start;
 
-                    if (passedRight >= time) {
-                        clearInterval(intervalAnimateRight);
+                    if (passedBottom >= time + 500) {
+                        clearInterval(intervalAnimateBottom);
                         popup.style.display = 'none';
                         return;
                     }
 
-                    popupContent.style.left = (startPosition - passedRight / 5) + 'px';
+                    popupContent.style.top = (startPosition - passedBottom) + 'px';
 
-                }, 10);
+                }, 5);
 
             } else {
                 popup.style.display = 'none';
             }
-
         });
     };
 
