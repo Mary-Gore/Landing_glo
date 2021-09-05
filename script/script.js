@@ -81,10 +81,9 @@ window.addEventListener('DOMContentLoaded', () => {
     // Меню
     const toggleMenu = () => {
 
-        const btnMenu = document.querySelector('.menu'),
-            menu = document.querySelector('menu');
+        const menu = document.querySelector('menu');
 
-        const handlerMenu = (elem) => {
+        const handlerMenu = elem => {
 
             if (!menu.classList.contains('active-menu')) {
                 menu.classList.add('active-menu');
@@ -101,7 +100,7 @@ window.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click', event => {
 
             const target = event.target;
-           
+
             if (target) {
                 handlerMenu(target);
             }
