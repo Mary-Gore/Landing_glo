@@ -3,7 +3,21 @@ window.addEventListener('DOMContentLoaded', () => {
     let intervalId,
         intervalAnimateLeft,
         intervalAnimateRight,
-        startPosition = 0;
+        startPosition = 0,
+        time;
+
+    if (document.body.clientWidth >= 768 &&
+        document.body.clientWidth <= 1000) {
+
+        time = 400;
+
+    } else if (document.body.clientWidth > 1000 &&
+        document.body.clientWidth < 1200) {
+
+        time = 1000;
+    } else {
+        time = 2200;
+    }
 
     const popup = document.querySelector('.popup'),
         popupContent = document.querySelector('.popup-content');
@@ -99,34 +113,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
                     const start = Date.now();
 
-                    // Заготовка if для ф-ции
-                    // Разное время (положение окна) 
-                    // в зависимости от экрана
-                    const passedFuncLeft = time => {
-                        if (document.body.clientWidth > 768) {
-
-                            if (time >= 2200) {
-                                clearInterval(intervalAnimateLeft);
-                                startPosition = time / 5;
-                                return;
-                            }
-
-                        } else {
-
-                            if (time >= 450) {
-                                clearInterval(intervalAnimateLeft);
-                                startPosition = time / 5;
-                                return;
-                            }
-                        }
-                    };
-
                     // Анимация вправо
                     intervalAnimateLeft = setInterval(() => {
 
                         const passed = Date.now() - start;
 
-                        passedFuncLeft(passed);
+                        if (passed >= time) {
+                            clearInterval(intervalAnimateLeft);
+                            startPosition = passed / 5;
+                            return;
+                        }
 
                         popup.style.display = 'block';
                         popupContent.style.left = passed / 5 + 'px';
@@ -151,31 +147,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
                     const passedRight = Date.now() - start;
 
-                    const passedFuncRight = time => {
+                    if (passedRight >= time) {
+                        clearInterval(intervalAnimateRight);
+                        popup.style.display = 'none';
+                        return;
+                    }
 
-                        if (document.body.clientWidth > 768) {
-
-                            if (time >= 2200) {
-                                clearInterval(intervalAnimateRight);
-                                popup.style.display = 'none';
-                                return;
-                            }
-
-                        } else {
-
-                            if (time >= 450) {
-                                clearInterval(intervalAnimateRight);
-                                popup.style.display = 'none';
-                                return;
-                            }
-                        }
-
-                    };
-
-                    passedFuncRight(passedRight);
                     popupContent.style.left = (startPosition - passedRight / 5) + 'px';
 
                 }, 10);
+
             } else {
                 popup.style.display = 'none';
             }
