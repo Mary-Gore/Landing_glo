@@ -113,7 +113,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
                     const start = Date.now();
 
-                    // Анимация вправо
+                    // Анимация сверху-вниз
                     intervalAnimateTop = setInterval(() => {
 
                         const passed = Date.now() - start;
@@ -143,7 +143,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 const start = Date.now();
 
-                // Анимация влево и скрытие блока
+                // Анимация снизу вверх и скрытие блока
                 intervalAnimateBottom = setInterval(() => {
 
                     const passedBottom = Date.now() - start;
