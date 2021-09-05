@@ -90,7 +90,6 @@ window.addEventListener('DOMContentLoaded', () => {
             } else {
                 if (elem.matches('a')) {
                     menu.classList.remove('active-menu');
-                    console.log(elem);
                 } else {
                     return;
                 }
