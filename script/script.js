@@ -90,7 +90,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         menu.addEventListener('click', event => {
 
-            let target = event.target;
+            const target = event.target;
 
             if (target.matches('a')) {
                 handlerMenu();
