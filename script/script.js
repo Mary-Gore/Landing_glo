@@ -241,6 +241,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 const dotLi = document.createElement('li');
                 dotLi.classList.add('dot');
+
+                if (i === 0) {
+                    dotLi.classList.add('dot-active');
+                }
+
                 dotUl.appendChild(dotLi);
             }
         };
@@ -329,7 +334,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        startSlide(1500);
+        startSlide(3500);
     };
 
     slide();
