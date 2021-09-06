@@ -334,7 +334,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        startSlide(3500);
+        startSlide(1500);
     };
 
     slide();
