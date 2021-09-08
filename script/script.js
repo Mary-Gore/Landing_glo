@@ -1,11 +1,19 @@
+/* eslint-disable no-useless-escape */
 window.addEventListener('DOMContentLoaded', () => {
-
 
     let intervalId,
         intervalAnimateTop,
         intervalAnimateBottom,
         startPosition = 0,
         time;
+
+    const popup = document.querySelector('.popup'),
+        popupContent = document.querySelector('.popup-content'),
+        img = document.querySelectorAll('#command img'),
+        calcBlock = document.querySelector('.calc-block'),
+        footerFormInput = document.querySelector('.footer-form-input');
+
+
 
     if (document.body.clientWidth >= 768 &&
         document.body.clientWidth <= 1000) {
@@ -19,9 +27,6 @@ window.addEventListener('DOMContentLoaded', () => {
     } else {
         time = 300;
     }
-
-    const popup = document.querySelector('.popup'),
-        popupContent = document.querySelector('.popup-content');
 
     //Таймер
     const countTimer = deadline => {
@@ -226,5 +231,170 @@ window.addEventListener('DOMContentLoaded', () => {
 
     tabs();
 
-});
+    // Слайдер
+    const slide = () => {
 
+        const slide = document.querySelectorAll('.portfolio-item'),
+            slider = document.querySelector('.portfolio-content'),
+            dotUl = document.querySelector('.portfolio-dots');
+
+        let currentSlide = 0,
+            interval;
+
+        const addDots = () => {
+
+            for (let i = 0; i < slide.length; i++) {
+
+                const dotLi = document.createElement('li');
+                dotLi.classList.add('dot');
+                dotUl.appendChild(dotLi);
+            }
+        };
+
+        addDots();
+
+
+        const dot = document.querySelectorAll('.dot');
+        const prevSlide = (elem, index, strClass) => {
+            elem[index].classList.remove(strClass);
+        };
+
+        const nextSlide = (elem, index, strClass) => {
+            elem[index].classList.add(strClass);
+        };
+
+        const autoPlaySlide = () => {
+
+            prevSlide(slide, currentSlide, 'portfolio-item-active');
+            prevSlide(dot, currentSlide, 'dot-active');
+            currentSlide++;
+            if (currentSlide >= slide.length) {
+                currentSlide = 0;
+            }
+            nextSlide(slide, currentSlide, 'portfolio-item-active');
+            nextSlide(dot, currentSlide, 'dot-active');
+        };
+
+        const startSlide = (time = 3000) => {
+            interval = setInterval(autoPlaySlide, time);
+        };
+
+        const stopSlide = () => {
+            clearInterval(interval);
+        };
+
+        slider.addEventListener('click', event => {
+
+            event.preventDefault();
+
+            const target = event.target;
+
+            if (!target.matches('.portfolio-btn, .dot')) {
+                return;
+            }
+
+            prevSlide(slide, currentSlide, 'portfolio-item-active');
+            prevSlide(dot, currentSlide, 'dot-active');
+
+            if (target.matches('#arrow-right')) {
+                currentSlide++;
+            } else if (target.matches('#arrow-left')) {
+                currentSlide--;
+            } else if (target.matches('.dot')) {
+                dot.forEach((elem, index) => {
+                    if (elem === target) {
+                        currentSlide = index;
+                    }
+                });
+            }
+
+            if (currentSlide >= slide.length) {
+                currentSlide = 0;
+            }
+
+            if (currentSlide < 0) {
+                currentSlide = slide.length - 1;
+            }
+            nextSlide(slide, currentSlide, 'portfolio-item-active');
+            nextSlide(dot, currentSlide, 'dot-active');
+        });
+
+        slider.addEventListener('mouseover', event => {
+
+            if (event.target.matches('.portfolio-btn') ||
+                event.target.matches('.dot')) {
+                stopSlide();
+            }
+        });
+
+        slider.addEventListener('mouseout', event => {
+
+            if (event.target.matches('.portfolio-btn') ||
+                event.target.matches('.dot')) {
+                startSlide();
+            }
+        });
+
+        startSlide(1500);
+    };
+
+    slide();
+
+    // Галерея
+    img.forEach(item => {
+
+        const imgSrc = item.src;
+
+        item.addEventListener('mouseenter', event => {
+            event.target.src = event.target.dataset.img;
+        });
+
+        item.addEventListener('mouseleave', event => {
+            event.target.src = imgSrc;
+        });
+    });
+
+    // Валидация
+    calcBlock.addEventListener('blur', event => {
+
+        if (event.target.matches('.calc-square, .calc-count, .calc-day')) {
+            event.target.value = event.target.value.replace(/\D/g, '');
+        }
+
+    }, true);
+
+    footerFormInput.addEventListener('blur', event => {
+
+        // имя и сообщение
+        if (event.target.matches('#form2-name, #form2-message')) {
+
+            event.target.value = event.target.value.replace(/(\w|(^-|-$)|(\s(?=\s)))/gim, '');
+            event.target.value = event.target.value.replace(/-{2}/gm, '-');
+        }
+
+        if (event.target.matches('#form2-name')) {
+
+            const val = event.target.value.toLowerCase();
+            event.target.value = val.replace(/(^[а-яё])/gi, match => match.toUpperCase());
+
+        }
+
+        // email
+        if (event.target.matches('#form2-email')) {
+
+            event.target.value = event.target.value.replace(/[^\w\d@\.\!~\*\'_-]/gi, '');
+            event.target.value = event.target.value.replace(/((^-|-$)|(\s(?=\s)))/g, '');
+            event.target.value = event.target.value.replace(/-{2}/g, '-');
+
+        }
+
+        // телефон
+        if (event.target.matches('#form2-phone')) {
+
+            event.target.value = event.target.value.replace(/((^-|-$)|([^\d()-]))/g, '');
+            event.target.value = event.target.value.replace(/-{2}/g, '-');
+
+        }
+    }, true);
+
+});
