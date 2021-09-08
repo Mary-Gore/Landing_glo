@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 window.addEventListener('DOMContentLoaded', () => {
 
     let intervalId,
@@ -286,7 +287,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             event.preventDefault();
 
-            let target = event.target;
+            const target = event.target;
 
             if (!target.matches('.portfolio-btn, .dot')) {
                 return;
@@ -340,9 +341,9 @@ window.addEventListener('DOMContentLoaded', () => {
     slide();
 
     // Галерея
-    img.forEach((item) => {
+    img.forEach(item => {
 
-        let imgSrc = item.src;
+        const imgSrc = item.src;
 
         item.addEventListener('mouseenter', event => {
             event.target.src = event.target.dataset.img;
@@ -373,8 +374,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (event.target.matches('#form2-name')) {
 
-            let val = event.target.value.toLowerCase();
-            event.target.value = val.replace(/(^[а-яё])/gi, (match) => match.toUpperCase());
+            const val = event.target.value.toLowerCase();
+            event.target.value = val.replace(/(^[а-яё])/gi, match => match.toUpperCase());
 
         }
 
