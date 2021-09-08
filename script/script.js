@@ -11,9 +11,8 @@ window.addEventListener('DOMContentLoaded', () => {
         popupContent = document.querySelector('.popup-content'),
         img = document.querySelectorAll('#command img'),
         calcBlock = document.querySelector('.calc-block'),
+        mainForm = document.querySelector('.main-form'),
         footerFormInput = document.querySelector('.footer-form-input');
-
-
 
     if (document.body.clientWidth >= 768 &&
         document.body.clientWidth <= 1000) {
@@ -363,38 +362,84 @@ window.addEventListener('DOMContentLoaded', () => {
 
     }, true);
 
-    footerFormInput.addEventListener('blur', event => {
+    // Проверка имени
+    const checkName = val => {
 
-        // имя и сообщение
-        if (event.target.matches('#form2-name, #form2-message')) {
+        const lowerVal = val.toLowerCase();
+        val = lowerVal.replace(/(^[а-яё])/gi, match => match.toUpperCase());
+        val = val.replace(/[^а-яё-\s]/gim, '');
+        val = val.replace(/((^-|-$)|(\s(?=\s)))/gim, '');
+        val = val.replace(/-{2}/gm, '-');
+        return val;
 
-            event.target.value = event.target.value.replace(/(\w|(^-|-$)|(\s(?=\s)))/gim, '');
-            event.target.value = event.target.value.replace(/-{2}/gm, '-');
+    };
+
+    // Проверка сообщения
+    const checkMessage = message => {
+
+        message = message.replace(/[^а-яё\.\?\!-\"\';\:,]/gi, '');
+        message = message.replace(/((^-|-$)|(\s(?=\s)))/gim, '');
+        message = message.replace(/-{2}/gm, '-');
+
+        return message;
+    };
+
+    // Проверка email
+    const checkEmail = email => {
+
+        email = email.replace(/[^\w\d@\.\!~\*\'_-]/gi, '');
+        email = email.replace(/((^-|-$)|(\s(?=\s)))/g, '');
+        email = email.replace(/-{2}/g, '-');
+        return email;
+
+    };
+
+    // Проверка телефона
+    const checkPhone = phone => {
+
+        phone = phone.replace(/[^\d()-]/g, '');
+        phone = phone.replace(/(^-|-$)/g, '');
+        phone = phone.replace(/-{2}/g, '-');
+        return phone;
+
+    };
+    // Форма на главном экране
+    mainForm.addEventListener('blur', event => {
+
+        if (event.target.matches('#form1-name')) {
+            event.target.value = checkName(event.target.value);
         }
 
-        if (event.target.matches('#form2-name')) {
-
-            const val = event.target.value.toLowerCase();
-            event.target.value = val.replace(/(^[а-яё])/gi, match => match.toUpperCase());
-
+        if (event.target.matches('#form1-email')) {
+            event.target.value = checkEmail(event.target.value);
         }
 
-        // email
-        if (event.target.matches('#form2-email')) {
-
-            event.target.value = event.target.value.replace(/[^\w\d@\.\!~\*\'_-]/gi, '');
-            event.target.value = event.target.value.replace(/((^-|-$)|(\s(?=\s)))/g, '');
-            event.target.value = event.target.value.replace(/-{2}/g, '-');
-
-        }
-
-        // телефон
-        if (event.target.matches('#form2-phone')) {
-
-            event.target.value = event.target.value.replace(/((^-|-$)|([^\d()-]))/g, '');
-            event.target.value = event.target.value.replace(/-{2}/g, '-');
-
+        if (event.target.matches('#form1-phone')) {
+            event.target.value = checkPhone(event.target.value);
         }
     }, true);
 
+    // Форма в футере
+    footerFormInput.addEventListener('blur', event => {
+
+        if (event.target.matches('#form2-name')) {
+            event.target.value = checkName(event.target.value);
+        }
+
+
+        if (event.target.matches('#form2-message')) {
+            event.target.value = checkMessage(event.target.value);
+        }
+
+        if (event.target.matches('#form2-email')) {
+            event.target.value = checkEmail(event.target.value);
+        }
+
+        if (event.target.matches('#form2-phone')) {
+            event.target.value = checkPhone(event.target.value);
+        }
+
+    }, true);
+
 });
+
