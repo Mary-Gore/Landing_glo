@@ -473,7 +473,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 total = price * typeValue * squareValue * countValue * dayValue;
             }
 
-            if (!isNaN(total)) totalValue.textContent = total;
+            if (!isNaN(total)) totalValue.textContent = total.toFixed(2);
         };
 
         calcBlock.addEventListener('change', event => {
