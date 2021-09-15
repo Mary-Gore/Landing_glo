@@ -227,4 +227,3 @@ window.addEventListener('DOMContentLoaded', () => {
     tabs();
 
 });
-
