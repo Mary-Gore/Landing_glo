@@ -397,14 +397,14 @@ window.addEventListener('DOMContentLoaded', () => {
     // Проверка телефона
     const checkPhone = phone => {
 
-        phone = phone.replace(/[^\+\d]/g, '');
+        phone = phone.replace(/[^\d()-]/g, '');
         phone = phone.replace(/(^-|-$)/g, '');
         phone = phone.replace(/-{2}/g, '-');
         return phone;
 
     };
     // Форма на главном экране
-    mainForm.addEventListener('input', event => {
+    mainForm.addEventListener('blur', event => {
 
         if (event.target.matches('#form1-name')) {
             event.target.value = checkName(event.target.value);
@@ -420,7 +420,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }, true);
 
     // Форма в футере
-    footerFormInput.addEventListener('input', event => {
+    footerFormInput.addEventListener('blur', event => {
 
         if (event.target.matches('#form2-name')) {
             event.target.value = checkName(event.target.value);
@@ -488,85 +488,5 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     calc(100);
-
-    // send ajax-form
-    const sendForm = id => {
-
-        const errorMessage = 'Что-то пошло не так...',
-            loadMessage = 'Загрузка...',
-            sucessMessage = 'Спасибо! Мы скоро с вами свяжемся!';
-
-        const form = document.getElementById(id);
-
-        const statusMessage = document.createElement('div');
-
-        if (form.matches('#form3')) {
-            statusMessage.style.cssText = 'font-size: 16px; color: #fff;';
-        } else if (form.matches('#form2')) {
-            statusMessage.style.cssText = 'font-size: 2rem; padding-top: 30px;';
-        } else {
-            statusMessage.style.cssText = 'font-size: 2rem;';
-        }
-
-        form.addEventListener('submit', event => {
-
-            event.preventDefault();
-            form.appendChild(statusMessage);
-            statusMessage.textContent = loadMessage;
-            const formData = new FormData(form);
-
-            const body = {};
-
-            formData.forEach((val, key) => {
-                body[key] = val;
-            });
-
-
-            const postData = (body, outputData, errorData) => {
-
-                const request = new XMLHttpRequest();
-
-                request.addEventListener('readystatechange', () => {
-
-                    if (request.readyState !== 4) {
-                        return;
-                    }
-
-                    if (request.status === 200) {
-                        outputData();
-
-                    } else {
-                        errorData(request.status);
-                    }
-
-                });
-
-                request.open('POST', './server.php');
-                request.setRequestHeader('Content-Type', 'application/json');
-                request.send(JSON.stringify(body));
-
-                const inputs = document.querySelectorAll('input');
-                inputs.forEach(item => {
-                    item.value = '';
-                });
-
-            };
-
-            postData(body,
-                () => {
-                    statusMessage.textContent = sucessMessage;
-
-                },
-                error => {
-                    statusMessage.textContent = errorMessage;
-                    console.error(error);
-                });
-
-        });
-    };
-
-    sendForm('form1');
-    sendForm('form3');
-    sendForm('form2');
 });
 
