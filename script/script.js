@@ -1,11 +1,18 @@
+/* eslint-disable no-useless-escape */
 window.addEventListener('DOMContentLoaded', () => {
-
 
     let intervalId,
         intervalAnimateTop,
         intervalAnimateBottom,
         startPosition = 0,
         time;
+
+    const popup = document.querySelector('.popup'),
+        popupContent = document.querySelector('.popup-content'),
+        img = document.querySelectorAll('#command img'),
+        calcBlock = document.querySelector('.calc-block'),
+        mainForm = document.querySelector('.main-form'),
+        footerFormInput = document.querySelector('.footer-form-input');
 
     if (document.body.clientWidth >= 768 &&
         document.body.clientWidth <= 1000) {
@@ -19,9 +26,6 @@ window.addEventListener('DOMContentLoaded', () => {
     } else {
         time = 300;
     }
-
-    const popup = document.querySelector('.popup'),
-        popupContent = document.querySelector('.popup-content');
 
     //Таймер
     const countTimer = deadline => {
@@ -226,4 +230,262 @@ window.addEventListener('DOMContentLoaded', () => {
 
     tabs();
 
+    // Слайдер
+    const slide = () => {
+
+        const slide = document.querySelectorAll('.portfolio-item'),
+            slider = document.querySelector('.portfolio-content'),
+            dotUl = document.querySelector('.portfolio-dots');
+
+        let currentSlide = 0,
+            interval;
+
+        const addDots = () => {
+
+            for (let i = 0; i < slide.length; i++) {
+
+                const dotLi = document.createElement('li');
+                dotLi.classList.add('dot');
+                dotUl.appendChild(dotLi);
+            }
+        };
+
+        addDots();
+
+
+        const dot = document.querySelectorAll('.dot');
+        const prevSlide = (elem, index, strClass) => {
+            elem[index].classList.remove(strClass);
+        };
+
+        const nextSlide = (elem, index, strClass) => {
+            elem[index].classList.add(strClass);
+        };
+
+        const autoPlaySlide = () => {
+
+            prevSlide(slide, currentSlide, 'portfolio-item-active');
+            prevSlide(dot, currentSlide, 'dot-active');
+            currentSlide++;
+            if (currentSlide >= slide.length) {
+                currentSlide = 0;
+            }
+            nextSlide(slide, currentSlide, 'portfolio-item-active');
+            nextSlide(dot, currentSlide, 'dot-active');
+        };
+
+        const startSlide = (time = 3000) => {
+            interval = setInterval(autoPlaySlide, time);
+        };
+
+        const stopSlide = () => {
+            clearInterval(interval);
+        };
+
+        slider.addEventListener('click', event => {
+
+            event.preventDefault();
+
+            const target = event.target;
+
+            if (!target.matches('.portfolio-btn, .dot')) {
+                return;
+            }
+
+            prevSlide(slide, currentSlide, 'portfolio-item-active');
+            prevSlide(dot, currentSlide, 'dot-active');
+
+            if (target.matches('#arrow-right')) {
+                currentSlide++;
+            } else if (target.matches('#arrow-left')) {
+                currentSlide--;
+            } else if (target.matches('.dot')) {
+                dot.forEach((elem, index) => {
+                    if (elem === target) {
+                        currentSlide = index;
+                    }
+                });
+            }
+
+            if (currentSlide >= slide.length) {
+                currentSlide = 0;
+            }
+
+            if (currentSlide < 0) {
+                currentSlide = slide.length - 1;
+            }
+            nextSlide(slide, currentSlide, 'portfolio-item-active');
+            nextSlide(dot, currentSlide, 'dot-active');
+        });
+
+        slider.addEventListener('mouseover', event => {
+
+            if (event.target.matches('.portfolio-btn') ||
+                event.target.matches('.dot')) {
+                stopSlide();
+            }
+        });
+
+        slider.addEventListener('mouseout', event => {
+
+            if (event.target.matches('.portfolio-btn') ||
+                event.target.matches('.dot')) {
+                startSlide();
+            }
+        });
+
+        startSlide(1500);
+    };
+
+    slide();
+
+    // Галерея
+    img.forEach(item => {
+
+        const imgSrc = item.src;
+
+        item.addEventListener('mouseenter', event => {
+            event.target.src = event.target.dataset.img;
+        });
+
+        item.addEventListener('mouseleave', event => {
+            event.target.src = imgSrc;
+        });
+    });
+
+    // Валидация
+    calcBlock.addEventListener('blur', event => {
+
+        if (event.target.matches('.calc-square, .calc-count, .calc-day')) {
+            event.target.value = event.target.value.replace(/\D/g, '');
+        }
+
+    }, true);
+
+    // Проверка имени
+    const checkName = val => {
+
+        const lowerVal = val.toLowerCase();
+        val = lowerVal.replace(/(^[а-яё])/gi, match => match.toUpperCase());
+        val = val.replace(/[^а-яё-\s]/gim, '');
+        val = val.replace(/((^-|-$)|(\s(?=\s)))/gim, '');
+        val = val.replace(/-{2}/gm, '-');
+        return val;
+
+    };
+
+    // Проверка сообщения
+    const checkMessage = message => {
+
+        message = message.replace(/[^а-яё\.\?\!-\"\';\:,]/gi, '');
+        message = message.replace(/((^-|-$)|(\s(?=\s)))/gim, '');
+        message = message.replace(/-{2}/gm, '-');
+
+        return message;
+    };
+
+    // Проверка email
+    const checkEmail = email => {
+
+        email = email.replace(/[^\w\d@\.\!~\*\'_-]/gi, '');
+        email = email.replace(/((^-|-$)|(\s(?=\s)))/g, '');
+        email = email.replace(/-{2}/g, '-');
+        return email;
+
+    };
+
+    // Проверка телефона
+    const checkPhone = phone => {
+
+        phone = phone.replace(/[^\d()-]/g, '');
+        phone = phone.replace(/(^-|-$)/g, '');
+        phone = phone.replace(/-{2}/g, '-');
+        return phone;
+
+    };
+    // Форма на главном экране
+    mainForm.addEventListener('blur', event => {
+
+        if (event.target.matches('#form1-name')) {
+            event.target.value = checkName(event.target.value);
+        }
+
+        if (event.target.matches('#form1-email')) {
+            event.target.value = checkEmail(event.target.value);
+        }
+
+        if (event.target.matches('#form1-phone')) {
+            event.target.value = checkPhone(event.target.value);
+        }
+    }, true);
+
+    // Форма в футере
+    footerFormInput.addEventListener('blur', event => {
+
+        if (event.target.matches('#form2-name')) {
+            event.target.value = checkName(event.target.value);
+        }
+
+
+        if (event.target.matches('#form2-message')) {
+            event.target.value = checkMessage(event.target.value);
+        }
+
+        if (event.target.matches('#form2-email')) {
+            event.target.value = checkEmail(event.target.value);
+        }
+
+        if (event.target.matches('#form2-phone')) {
+            event.target.value = checkPhone(event.target.value);
+        }
+
+    }, true);
+
+    // Калькулятор
+    const calc = (price = 100) => {
+
+        const calcType = document.querySelector('.calc-type'),
+            calcSquare = document.querySelector('.calc-square'),
+            calcDay = document.querySelector('.calc-day'),
+            calcCount = document.querySelector('.calc-count'),
+            totalValue = document.getElementById('total');
+
+        const countSum = () => {
+
+            let total = 0,
+                countValue = 1,
+                dayValue = 1;
+
+            const typeValue = calcType.options[calcType.selectedIndex].value,
+                squareValue = calcSquare.value;
+
+            if (calcCount.value > 1) {
+                countValue += (calcCount.value - 1) / 10;
+            }
+
+            if (calcDay.value && calcDay.value < 5) {
+                dayValue *= 2;
+            } else if (calcDay.value && calcDay.value < 10) {
+                dayValue *= 1.5;
+            }
+
+            if (typeValue && squareValue) {
+                total = price * typeValue * squareValue * countValue * dayValue;
+            }
+
+            if (!isNaN(total)) totalValue.textContent = total.toFixed(2);
+        };
+
+        calcBlock.addEventListener('change', event => {
+
+            const target = event.target;
+
+            if (target.matches('select') || target.matches('input')) {
+                countSum();
+            }
+
+        });
+    };
+
+    calc(100);
 });
