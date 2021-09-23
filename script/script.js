@@ -536,28 +536,23 @@ window.addEventListener('DOMContentLoaded', () => {
                 body[key] = val;
             });
 
-            const postData = body => {
+            const postData = body => new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
+                request.addEventListener('readystatechange', () => {
 
-                const promise = new Promise((resolve, reject) => {
-                    const request = new XMLHttpRequest();
-                    request.addEventListener('readystatechange', () => {
-
-                        if (request.readyState !== 4) {
-                            return;
-                        }
-                        if (request.status === 200) {
-                            resolve();
-                        } else {
-                            reject(request.status);
-                        }
-                    });
-                    request.open('POST', 'server.php');
-                    request.setRequestHeader('Content-Type', 'application/json');
-                    request.send(JSON.stringify(body));
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+                    if (request.status === 200) {
+                        resolve();
+                    } else {
+                        reject(request.status);
+                    }
                 });
-
-                return promise;
-            };
+                request.open('POST', 'server.php');
+                request.setRequestHeader('Content-Type', 'application/json');
+                request.send(JSON.stringify(body));
+            });
 
             postData(body)
                 .then(() => {
@@ -573,5 +568,4 @@ window.addEventListener('DOMContentLoaded', () => {
     sendForm('form1');
     sendForm('form3');
     sendForm('form2');
-
 });
