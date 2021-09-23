@@ -573,4 +573,5 @@ window.addEventListener('DOMContentLoaded', () => {
     sendForm('form1');
     sendForm('form3');
     sendForm('form2');
+
 });
