@@ -1,34 +1,34 @@
 const tabs = () => {
-    const tabHeader = document.querySelector('.service-header'),
-        tab = tabHeader.querySelectorAll('.service-header-tab'),
-        tabContent = document.querySelectorAll('.service-tab');
+	const tabHeader = document.querySelector('.service-header'),
+		tab = tabHeader.querySelectorAll('.service-header-tab'),
+		tabContent = document.querySelectorAll('.service-tab');
 
-    const toggleContent = index => {
+	const toggleContent = index => {
 
-        for (let i = 0; i < tabContent.length; i++) {
+		for (let i = 0; i < tabContent.length; i++) {
 
-            if (index === i) {
-                tab[i].classList.add('active');
-                tabContent[i].classList.remove('d-none');
-            } else {
-                tab[i].classList.remove('active');
-                tabContent[i].classList.add('d-none');
-            }
-        }
-    };
+			if (index === i) {
+				tab[i].classList.add('active');
+				tabContent[i].classList.remove('d-none');
+			} else {
+				tab[i].classList.remove('active');
+				tabContent[i].classList.add('d-none');
+			}
+		}
+	};
 
-    tabHeader.addEventListener('click', event => {
+	tabHeader.addEventListener('click', event => {
 
-        let target = event.target;
-        target = target.closest('.service-header-tab');
+		let target = event.target;
+		target = target.closest('.service-header-tab');
 
-        if (target) {
-            tab.forEach((item, i) => {
-                if (item === target) {
-                    toggleContent(i);
-                }
-            });
-        }
-    });
+		if (target) {
+			tab.forEach((item, i) => {
+				if (item === target) {
+					toggleContent(i);
+				}
+			});
+		}
+	});
 };
 export default tabs;

@@ -6,7 +6,7 @@ import slide from './modules/slide';
 import calc from './modules/calc';
 import moveGallery from './modules/moveGallery';
 import sendForm from './modules/sendForm';
-
+import carouselMode from './modules/carouselMode';
 //Таймер
 countTimer('31 october 2021');
 
@@ -33,3 +33,4 @@ sendForm('form1');
 sendForm('form3');
 sendForm('form2');
 
+carouselMode();
